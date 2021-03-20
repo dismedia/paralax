@@ -1,15 +1,7 @@
-import {PositionValue, PositionValueSource} from "./domain";
+import {ScrollValue, ScrollValueSource} from "./domain";
 import {combineLatest, from, fromEvent, merge, of} from "rxjs";
 import {map, startWith} from "rxjs/operators";
 
-export const simpleSource: PositionValueSource = of({fromPx: 0, toPx: 100});
-
-
-function getScrollPercent() {
-    var docElement = document.documentElement,
-        body = document.body
-    return (docElement['scrollTop'] || body['scrollTop']) / ((docElement['scrollHeight'] || body['scrollHeight']) - docElement.clientHeight) * 100;
-}
 
 
 const extractPositionValues = (window) => {
@@ -17,19 +9,23 @@ const extractPositionValues = (window) => {
     const docElement = document.documentElement;
     const body = window.document.body
 
-    if(!body) return null;
+    if (!body) return null;
 
-    //not correnc yet
+    //not correct yet
 
     return {
-
-
         fromPx: window.pageYOffset,
-        toPx: window.pageYOffset + window.outerHeight,
+        toPx: window.pageYOffset + window.innerHeight,
+        p: window.pageYOffset / (window.document.documentElement.scrollHeight - window.innerHeight),
 
-        p:window.pageYOffset/(window.document.documentElement.scrollHeight-window.outerHeight)
+        height:window.innerHeight,
+        width:window.innerWidth,
 
-    } as PositionValue
+        docHeight:window.document.documentElement.scrollHeight,
+        docWidth:window.document.documentElement.scrollWidth
+
+
+    } as ScrollValue
 
 
 }
