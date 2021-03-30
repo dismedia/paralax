@@ -1,24 +1,23 @@
 import {combineLatest, from, fromEvent, merge, Observable, of, Subject} from "rxjs";
 import {thresholdGenerator} from "./threshold";
 import {IntersectionObserverOptions} from "./domain";
+import {map, startWith} from "rxjs/operators";
 
 
-export const createObserver: (options: IntersectionObserverOptions) => Observable<IntersectionObserverEntry[]> = (options: IntersectionObserverOptions) => {
+export const createElementObserver: (options: IntersectionObserverOptions) => Observable<IntersectionObserverEntry> = (options: IntersectionObserverOptions) => {
 
-
-    const thresholds=Array.from(thresholdGenerator(options.thresholdStep)).reverse();
-    console.log(thresholds.reverse())
+    const threshold = Array.from(thresholdGenerator(options.thresholdStep))
 
     let internalObserverOptions = {
         root: options.rootElement,
         rootMargin: '0px',
-        threshold: thresholds
+        threshold
     }
 
 
     return new Observable((subscriber) => {
         let observer: IntersectionObserver = new IntersectionObserver((v) => {
-            subscriber.next(v)
+            subscriber.next(v[0])
         }, internalObserverOptions);
 
         observer.observe(options.targetElement)
@@ -26,8 +25,12 @@ export const createObserver: (options: IntersectionObserverOptions) => Observabl
         return () => {
             observer.unobserve(options.targetElement)
         }
-
     })
-
 }
 
+
+export const createWindowObserver: Observable<Window> = fromEvent(window, "resize")
+    .pipe(
+        map(e => e.currentTarget as Window),
+        startWith(window)
+    )
