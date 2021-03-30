@@ -1,28 +1,15 @@
-import { affectPosition } from "./adapters/styleAdapter";
-import {domSource} from "./sources/sources";
-
-console.log("entry");
+import "./style.scss";
+import {createObserver} from "./sources/sources";
 
 
-setTimeout(()=>{
+createObserver({
+    thresholdStep: 0.025,
+    rootElement: null,
+    targetElement: document.querySelector("#area2")
+}).subscribe((e) => {
 
-    domSource(window as any)
-        .subscribe((e)=>{
-            console.log(e)
-        })
+    console.log(e[0].intersectionRatio);
+    //console.log(e[0]);
+    //document.querySelector("#dbg1").innerHTML=""+e[0].intersectionRatio
 
-
-    const el=(window as any).document.body.querySelector("#el1")
-
-
-    domSource(window as any)
-        .pipe(
-            affectPosition(el)
-        )
-        .subscribe((e)=>{})
-
-
-
-
-},100)
-
+})

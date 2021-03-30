@@ -1,39 +1,33 @@
-import {ScrollValue, ScrollValueSource} from "./domain";
-import {combineLatest, from, fromEvent, merge, of} from "rxjs";
-import {map, startWith} from "rxjs/operators";
+import {combineLatest, from, fromEvent, merge, Observable, of, Subject} from "rxjs";
+import {thresholdGenerator} from "./threshold";
+import {IntersectionObserverOptions} from "./domain";
 
 
-
-const extractPositionValues = (window) => {
-
-    const docElement = document.documentElement;
-    const body = window.document.body
-
-    if (!body) return null;
-
-    //not correct yet
-
-    return {
-        fromPx: window.pageYOffset,
-        toPx: window.pageYOffset + window.innerHeight,
-        p: window.pageYOffset / (window.document.documentElement.scrollHeight - window.innerHeight),
-
-        height:window.innerHeight,
-        width:window.innerWidth,
-
-        docHeight:window.document.documentElement.scrollHeight,
-        docWidth:window.document.documentElement.scrollWidth
+export const createObserver: (options: IntersectionObserverOptions) => Observable<IntersectionObserverEntry[]> = (options: IntersectionObserverOptions) => {
 
 
-    } as ScrollValue
+    const thresholds=Array.from(thresholdGenerator(options.thresholdStep)).reverse();
+    console.log(thresholds.reverse())
 
+    let internalObserverOptions = {
+        root: options.rootElement,
+        rootMargin: '0px',
+        threshold: thresholds
+    }
+
+
+    return new Observable((subscriber) => {
+        let observer: IntersectionObserver = new IntersectionObserver((v) => {
+            subscriber.next(v)
+        }, internalObserverOptions);
+
+        observer.observe(options.targetElement)
+
+        return () => {
+            observer.unobserve(options.targetElement)
+        }
+
+    })
 
 }
 
-export const domSource = (window) => merge(
-    fromEvent(window, "resize"),
-    fromEvent(window, "scroll")
-).pipe(
-    map((resizeEvent, ScrollEvent) => extractPositionValues(window)),
-    startWith(extractPositionValues(window))
-)
