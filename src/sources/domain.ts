@@ -1,18 +1,9 @@
-import {Observable} from "rxjs";
 
-export  interface ScrollValue {
+export interface IntersectionObserverOptions{
 
-    fromPx:number;
-    toPx:number;
-    p:number;
+    thresholdStep:number;
+    targetElement:Element;
+    rootElement:Element|null;
 
-   width:number;
-   height:number;
-
-    docWidth:number;
-    docHeight:number;
 
 }
-
-
-export type ScrollValueSource =Observable<ScrollValue>
