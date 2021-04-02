@@ -1,6 +1,4 @@
 
-
-
 export type FadeFactor=number;
 
 export interface IntersectionObserverOptions{
@@ -11,7 +9,6 @@ export interface IntersectionObserverOptions{
 
 
 }
-
 
 export type Position={x:number;y:number}
 export type Opacity=number

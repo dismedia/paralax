@@ -1,8 +1,10 @@
 const path = require('path');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 
 module.exports = {
     entry: './src/index.ts',
-    mode:"development",
+    mode:"production",
     devtool: 'inline-source-map',
     module: {
         rules: [
@@ -37,4 +39,7 @@ module.exports = {
         compress: true,
         port: 3334,
     },
+    plugins: [
+        new BundleAnalyzerPlugin()
+    ]
 };

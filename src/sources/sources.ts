@@ -1,7 +1,9 @@
-import {combineLatest, from, fromEvent, merge, Observable, of, Subject} from "rxjs";
+import {fromEvent, Observable} from "rxjs";
 import {thresholdGenerator} from "./threshold";
 import {IntersectionObserverOptions} from "./domain";
 import {map, startWith} from "rxjs/operators";
+
+
 
 
 export const createElementObserver: (options: IntersectionObserverOptions) => Observable<IntersectionObserverEntry> = (options: IntersectionObserverOptions) => {

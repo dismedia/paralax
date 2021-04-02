@@ -3,7 +3,7 @@ import {createElementObserver, createWindowObserver} from "./sources/sources";
 import {add, fadeFactor, steps3} from "./pipes/pipes";
 import {cssClassName, rotate, translate} from "./drivers/dom";
 import {map, share, tap, withLatestFrom} from "rxjs/operators";
-import {Position} from "./sources/domain";
+
 
 
 const moveable1 = document.querySelector("#moveable1");
@@ -85,9 +85,9 @@ const sharedFadeFactor = createElementObserver({
         share()
     )
 
-sharedFadeFactor.pipe(add(0.2), steps3(0.4, ["before listItem", "visible listItem", "after listItem"]), cssClassName(listEl0)).subscribe()
-sharedFadeFactor.pipe(add(0.1), steps3(0.4, ["before listItem", "visible listItem", "after listItem"]), cssClassName(listEl1)).subscribe()
-sharedFadeFactor.pipe(add(0.0), steps3(0.4, ["before listItem", "visible listItem", "after listItem"]), cssClassName(listEl2)).subscribe()
-sharedFadeFactor.pipe(add(-0.1), steps3(0.4, ["before listItem", "visible listItem", "after listItem"]), cssClassName(listEl3)).subscribe()
-sharedFadeFactor.pipe(add(-0.2), steps3(0.4, ["before listItem", "visible listItem", "after listItem"]), cssClassName(listEl4)).subscribe()
+sharedFadeFactor.pipe(add(0.2), steps3(0.1, ["before listItem", "visible listItem", "after listItem"]), cssClassName(listEl0)).subscribe()
+sharedFadeFactor.pipe(add(0.1), steps3(0.1, ["before listItem", "visible listItem", "after listItem"]), cssClassName(listEl1)).subscribe()
+sharedFadeFactor.pipe(add(0.0), steps3(0.1, ["before listItem", "visible listItem", "after listItem"]), cssClassName(listEl2)).subscribe()
+sharedFadeFactor.pipe(add(-0.1), steps3(0.1, ["before listItem", "visible listItem", "after listItem"]), cssClassName(listEl3)).subscribe()
+sharedFadeFactor.pipe(add(-0.2), steps3(0.1, ["before listItem", "visible listItem", "after listItem"]), cssClassName(listEl4)).subscribe()
 
