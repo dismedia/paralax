@@ -17,6 +17,13 @@ export const translate = (element: any) => pipe(
     )
 )
 
+export const opacity = (element: any) => pipe(
+    tap((value:number) => {
+            element.style.opacity = value
+        }
+    )
+)
+
 
 export const cssClassName = (element: any) => pipe(
     tap((p: string) => {

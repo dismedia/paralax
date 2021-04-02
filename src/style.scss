@@ -1,12 +1,7 @@
 $body-color: red;
 
 
-
-
 body {
-
-
-
   margin: 0;
   padding: 0;
   font-family: 'Montserrat', sans-serif;
@@ -14,18 +9,77 @@ body {
   height: 100%;
 }
 
-h1{
+h1 {
   font-weight: 400;
   padding: 3em;
-  margin:0;
+  margin: 0;
 
 }
 
 
+#phrases {
 
-.fullPageContainer{
+  font-size: 2em;
+  font-weight: 400;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+
+  div {
+    position: absolute;
+    top: 0;
+    left: 0;
 
 
+    transition: opacity 0.2s ease-in;
+
+    .sub {
+      position: absolute;
+      top: 4em;
+      left: 0;
+      font-size: 0.4em;
+      color: black;
+      font-weight: normal;
+      transition: all 0.2s ease-in;
+
+
+    }
+  }
+
+
+  .visible {
+    opacity: 1;
+
+    .sub {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .invisible {
+
+    .sub {
+      transition-delay: 1.2s;
+      transform: translateY(60px);
+      opacity: 0;
+    }
+
+    opacity: 0;
+  }
+
+
+}
+
+
+.marginPageContainer {
+  height: 5%;
+  width: 100%;
+
+}
+
+
+.fullPageContainer {
   background-color: #ffffff;
   color: #000000;
 
@@ -34,18 +88,23 @@ h1{
 
 }
 
-.competences{
+.competences {
 
 }
 
-.tellUs{
+.tellUs {
 
 }
 
-.blog{
+.blog {
 
 }
 
-.blockchain{
+.blockchain {
+
+}
+
+
+#area5 {
 
 }

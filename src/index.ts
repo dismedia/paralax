@@ -2,10 +2,11 @@ import "./style.scss";
 import {createElementObserver, createWindowObserver} from "./sources/sources";
 import {add, fadeFactor, steps3} from "./pipes/pipes";
 import {cssClassName, rotate, translate} from "./drivers/dom";
-import {map, share, tap, withLatestFrom} from "rxjs/operators";
+import {map, mapTo, scan, share, switchMap, take, tap, withLatestFrom} from "rxjs/operators";
+import {from, interval, of, pipe} from "rxjs";
 
 
-
+/*
 const moveable1 = document.querySelector("#moveable1");
 const moveable2 = document.querySelector("#moveable2");
 const withClass1 = document.querySelector("#withClass1");
@@ -90,4 +91,71 @@ sharedFadeFactor.pipe(add(0.1), steps3(0.1, ["before listItem", "visible listIte
 sharedFadeFactor.pipe(add(0.0), steps3(0.1, ["before listItem", "visible listItem", "after listItem"]), cssClassName(listEl2)).subscribe()
 sharedFadeFactor.pipe(add(-0.1), steps3(0.1, ["before listItem", "visible listItem", "after listItem"]), cssClassName(listEl3)).subscribe()
 sharedFadeFactor.pipe(add(-0.2), steps3(0.1, ["before listItem", "visible listItem", "after listItem"]), cssClassName(listEl4)).subscribe()
+*/
+
+
+const data = ["backend solutions", "blockchain", "frontend applications", "a3d experience","tt","fy", "a3dev"]
+
+of(data.map((phrase, i, array) => {
+        const id = phrase.replace(" ", "_");
+        return {
+            phrase, id,
+            element: document.querySelector("#" + id),
+            phase: i / array.length
+        }
+
+    }
+    )
+).pipe(
+    switchMap(
+        (arr: { element: Element, phase: number }[]) => createElementObserver({
+            thresholdStep: 0.1/arr.length,
+            rootElement: null,
+            targetElement: document.querySelector("#area1")
+        }).pipe(
+            fadeFactor,
+            switchMap((value: number) =>
+                interval(100).pipe(
+                    take(15),
+                    mapTo(value)
+                ),
+            ),
+            scan((acc, v) => {
+
+                    const m = 0.3
+                    //EMA = Closing price x multiplier + EMA (previous day) x (1-multiplier)
+                    return (v * m) + acc * (1 - m)
+                }, 0
+            ),
+            tap(value => {
+
+                arr.forEach(({element, phase}) => {
+
+
+
+                    const el = element as any
+                    const x = (value - phase) / ( 1/arr.length);
+
+                    //el.innerHTML=value-phase;
+
+                    if (x > 0 && x < 1) {
+                        //if(x<0.5) el.style.opacity = Math.min(x*4,0);
+                        //if(x>=0.5) el.style.opacity = Math.max(-x*4+4,0);
+                        el.className = "visible";
+
+                    } else {
+                        el.className="invisible";
+                    }
+
+
+                })
+
+            })
+        ),
+    ),
+)
+
+
+    .subscribe(s => console.log(s))
+
 
